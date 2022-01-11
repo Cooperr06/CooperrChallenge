@@ -1,0 +1,7 @@
+name: CooperrChallenge
+version: '${project.version}'
+main: de.cooperr.cooperrchallenge.CooperrChallenge
+api-version: 1.18
+prefix: CooperrChallenge
+authors: [ Cooperr06 ]
+description: CooperrGaming Challenge Plugin
