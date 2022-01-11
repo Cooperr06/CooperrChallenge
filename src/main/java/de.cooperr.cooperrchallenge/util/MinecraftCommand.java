@@ -18,6 +18,9 @@ public abstract class MinecraftCommand implements TabExecutor {
         registerCommand();
     }
 
+    /**
+     * Registers the command to the plugin while checking if command exists in plugin.yml
+     */
     public void registerCommand() {
         PluginCommand pluginCommand = plugin.getCommand(getCommandName());
         if (pluginCommand == null) {
@@ -27,13 +30,30 @@ public abstract class MinecraftCommand implements TabExecutor {
         }
     }
 
+    /**
+     * @return Command name of the command
+     */
     public abstract String getCommandName();
+
+    /**
+     * @return Command usage of the command
+     */
     public abstract String getCommandUsage();
 
+    /**
+     * Sends the right command usage to a sender
+     *
+     * @param sender Sender to send to the message
+     */
     public void sendCommandUsage(CommandSender sender) {
         sender.sendMessage(Component.text("Usage: " + getCommandUsage(), NamedTextColor.DARK_RED));
     }
 
+    /**
+     * Sends a message to a sender if it has to be a player
+     *
+     * @param sender Sender to send to the message
+     */
     public void sendWrongSenderMessage(CommandSender sender) {
         sender.sendMessage(Component.text("You have to be a player to use this command!", NamedTextColor.DARK_RED));
     }

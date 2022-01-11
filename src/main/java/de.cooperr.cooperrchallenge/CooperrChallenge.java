@@ -1,6 +1,8 @@
 package de.cooperr.cooperrchallenge;
 
 import de.cooperr.cooperrchallenge.listener.AsyncChatListener;
+import de.cooperr.cooperrchallenge.listener.PlayerJoinListener;
+import de.cooperr.cooperrchallenge.listener.PlayerQuitListener;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,5 +32,7 @@ public final class CooperrChallenge extends JavaPlugin {
 
     private void listenerRegistration() {
         new AsyncChatListener(plugin);
+        new PlayerJoinListener(plugin);
+        new PlayerQuitListener(plugin);
     }
 }

@@ -21,6 +21,7 @@ public class AsyncChatListener extends MinecraftListener {
 
         event.message(player.displayName().style(Style.style(NamedTextColor.BLUE))
                 .append(Component.text(" » ", NamedTextColor.GRAY))
-                .append(event.originalMessage()));
+                .append(event.originalMessage()
+                        .style(Style.style(NamedTextColor.GRAY))));
     }
 }
