@@ -6,5 +6,8 @@
 out/
 *.iml
 
+# Maven
+target/
+
 # Log file
 *.log
