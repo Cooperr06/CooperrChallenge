@@ -3,5 +3,25 @@ version: '${project.version}'
 main: de.cooperr.cooperrchallenge.CooperrChallenge
 api-version: 1.18
 prefix: CooperrChallenge
-authors: [ Cooperr06 ]
+author: Cooperr06
 description: CooperrGaming Challenge Plugin
+
+permissions:
+  cooperrchallenge.*:
+    default: op
+    children:
+      - cooperrchallenge.command.*
+
+  cooperrchallenge.command.*:
+    default: op
+    children:
+      - cooperrchallenge.command.challenge
+
+  cooperrchallenge.command.challenge:
+    default: true
+
+commands:
+  challenges:
+    description: Shows all available challenges
+    usage: /challenge
+    permission: cooperrchallenge.command.challenge
