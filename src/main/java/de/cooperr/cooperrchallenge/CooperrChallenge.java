@@ -6,6 +6,7 @@ import de.cooperr.cooperrchallenge.listener.PlayerQuitListener;
 import de.cooperr.cooperrchallenge.util.Config;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +26,7 @@ public final class CooperrChallenge extends JavaPlugin {
     public void onEnable() {
         commandRegistration();
         listenerRegistration();
+        permissionRegistration();
     }
 
     @Override
@@ -39,6 +41,18 @@ public final class CooperrChallenge extends JavaPlugin {
         new AsyncChatListener(plugin);
         new PlayerJoinListener(plugin);
         new PlayerQuitListener(plugin);
+    }
+
+    private void permissionRegistration() {
+        getServer().getPluginManager().addPermission(new Permission("cooperrchallenge.command.challenge"));
+
+        getServer().getPluginManager().getPermissions().forEach(permission -> {
+            if (permission.getName().startsWith("cooperrchallenge.command.") && !permission.getName().contains("*")) {
+                permission.addParent("cooperrchallenge.command.*", true);
+            } else if (!permission.getName().equals("cooperrchallenge.*") && permission.getName().contains("*")) {
+                permission.addParent("cooperrchallenge.*", true);
+            }
+        });
     }
 
     @Override
