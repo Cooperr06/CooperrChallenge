@@ -1,5 +1,6 @@
 package de.cooperr.cooperrchallenge;
 
+import de.cooperr.cooperrchallenge.command.ChallengeCommand;
 import de.cooperr.cooperrchallenge.listener.AsyncChatListener;
 import de.cooperr.cooperrchallenge.listener.PlayerJoinListener;
 import de.cooperr.cooperrchallenge.listener.PlayerQuitListener;
@@ -34,7 +35,7 @@ public final class CooperrChallenge extends JavaPlugin {
     }
 
     private void commandRegistration() {
-
+        new ChallengeCommand(plugin);
     }
 
     private void listenerRegistration() {
