@@ -11,17 +11,11 @@ import java.util.logging.Level;
 
 public abstract class MinecraftCommand implements TabExecutor {
 
-    private final CooperrChallenge plugin;
+    public final CooperrChallenge plugin;
 
     public MinecraftCommand(CooperrChallenge plugin) {
         this.plugin = plugin;
-        registerCommand();
-    }
 
-    /**
-     * Registers the command to the plugin while checking if command exists in plugin.yml
-     */
-    public void registerCommand() {
         PluginCommand pluginCommand = plugin.getCommand(getCommandName());
         if (pluginCommand == null) {
             plugin.getLogger().log(Level.SEVERE, "Failed to register command \"" + getCommandName() + "\"");
@@ -36,7 +30,7 @@ public abstract class MinecraftCommand implements TabExecutor {
     public abstract String getCommandName();
 
     /**
-     * @return Command usage of the command
+     * @return Command usage of the command with "/"
      */
     public abstract String getCommandUsage();
 
@@ -54,7 +48,16 @@ public abstract class MinecraftCommand implements TabExecutor {
      *
      * @param sender Sender to send to the message
      */
-    public void sendWrongSenderMessage(CommandSender sender) {
+    protected void sendWrongSenderMessage(CommandSender sender) {
         sender.sendMessage(Component.text("You have to be a player to use this command!", NamedTextColor.DARK_RED));
+    }
+
+    /**
+     * Sends a message to a sender if an error occurred while executing command
+     *
+     * @param sender Sender to send to the message
+     */
+    public void sendErrorMessage(CommandSender sender) {
+        sender.sendMessage(Component.text("An error occurred while executing command!", NamedTextColor.DARK_RED));
     }
 }
