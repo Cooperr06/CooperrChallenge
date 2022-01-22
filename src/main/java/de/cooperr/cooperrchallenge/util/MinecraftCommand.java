@@ -3,10 +3,15 @@ package de.cooperr.cooperrchallenge.util;
 import de.cooperr.cooperrchallenge.CooperrChallenge;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 public abstract class MinecraftCommand implements TabExecutor {
@@ -23,16 +28,6 @@ public abstract class MinecraftCommand implements TabExecutor {
             pluginCommand.setExecutor(this);
         }
     }
-
-    /**
-     * @return Command name of the command
-     */
-    public abstract String getCommandName();
-
-    /**
-     * @return Command usage of the command with "/"
-     */
-    public abstract String getCommandUsage();
 
     /**
      * Sends the right command usage to a sender
@@ -53,11 +48,21 @@ public abstract class MinecraftCommand implements TabExecutor {
     }
 
     /**
-     * Sends a message to a sender if an error occurred while executing command
+     * Sends a message to a sender if something went wrong
      *
      * @param sender Sender to send to the message
      */
-    public void sendErrorMessage(CommandSender sender) {
-        sender.sendMessage(Component.text("An error occurred while executing command!", NamedTextColor.DARK_RED));
+    public void sendErrorMessage(String message, CommandSender sender) {
+        sender.sendMessage(Component.text(message, NamedTextColor.DARK_RED));
     }
+
+    /**
+     * @return Command name of the command
+     */
+    public abstract String getCommandName();
+
+    /**
+     * @return Command usage of the command with "/"
+     */
+    public abstract String getCommandUsage();
 }
