@@ -15,13 +15,15 @@ public class Timer {
     private final CooperrChallenge plugin;
 
     @Getter
+    private boolean running = false;
+    @Getter
     private int rawTime = 0;
+    private int taskId;
 
     public Timer(CooperrChallenge plugin) {
         this.plugin = plugin;
 
         if (plugin.getConfig().getConfigurationSection("timer") == null) {
-            plugin.getConfig().set("timer.running", false);
             plugin.getConfig().set("timer.time", 0);
 
             plugin.getLogger().log(Level.INFO, "Default values set for Timer!");
@@ -33,10 +35,11 @@ public class Timer {
      */
     public void start() {
 
-        if (plugin.getConfig().getBoolean("timer.running")) {
+        if (running) {
             return;
         }
 
+        running = true;
         rawTime = plugin.getConfig().getInt("timer.time");
 
         plugin.getServer().broadcast(Component.text("Timer started!", NamedTextColor.GOLD, TextDecoration.BOLD));
@@ -50,7 +53,11 @@ public class Timer {
         plugin.getServer().getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.sendActionBar(Component.text(
                 formatTime(), NamedTextColor.GREEN, TextDecoration.BOLD)));
 
-        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+        taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if (!running) {
+                return;
+            }
+
             rawTime++;
             plugin.getServer().getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.sendActionBar(Component.text(
                     formatTime(), NamedTextColor.GREEN, TextDecoration.BOLD)));
@@ -64,11 +71,15 @@ public class Timer {
      */
     public void stop(boolean reset) {
 
-        if (!plugin.getConfig().getBoolean("timer.running")) {
+        if (!running) {
             return;
         }
 
-        plugin.getServer().broadcast(Component.text("Timer stopped!", NamedTextColor.GOLD, TextDecoration.BOLD));
+        plugin.getServer().getScheduler().cancelTask(taskId);
+        running = false;
+
+        plugin.getServer().broadcast(Component.text("Timer stopped! Your time is " + formatTime() + "!",
+                NamedTextColor.GOLD, TextDecoration.BOLD));
 
         plugin.getServer().showTitle(Title.title(Component.text("Timer", NamedTextColor.GOLD, TextDecoration.BOLD),
                 Component.text("stopped", NamedTextColor.RED, TextDecoration.BOLD), Title.Times.of(
@@ -76,7 +87,6 @@ public class Timer {
                         Duration.ofMillis(1000),
                         Duration.ofMillis(500))));
 
-        plugin.getConfig().set("timer.running", false);
         if (reset) {
             rawTime = 0;
             plugin.getConfig().set("timer.time", 0);

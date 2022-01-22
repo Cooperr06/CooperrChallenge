@@ -1,10 +1,12 @@
 package de.cooperr.cooperrchallenge;
 
 import de.cooperr.cooperrchallenge.command.ChallengeCommand;
+import de.cooperr.cooperrchallenge.command.TimerCommand;
 import de.cooperr.cooperrchallenge.listener.AsyncChatListener;
 import de.cooperr.cooperrchallenge.listener.PlayerJoinListener;
 import de.cooperr.cooperrchallenge.listener.PlayerQuitListener;
 import de.cooperr.cooperrchallenge.util.Config;
+import de.cooperr.cooperrchallenge.util.Timer;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.permissions.Permission;
@@ -16,11 +18,13 @@ public final class CooperrChallenge extends JavaPlugin {
 
     private CooperrChallenge plugin;
     private Config config;
+    private Timer timer;
 
     @Override
     public void onLoad() {
         plugin = this;
         config = new Config();
+        timer = new Timer(plugin);
     }
 
     @Override
@@ -36,6 +40,7 @@ public final class CooperrChallenge extends JavaPlugin {
 
     private void commandRegistration() {
         new ChallengeCommand(plugin);
+        new TimerCommand(plugin);
     }
 
     private void listenerRegistration() {

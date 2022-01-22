@@ -13,8 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.logging.Level;
-
 
 public class ChallengeCommand extends MinecraftCommand {
 
@@ -31,18 +29,13 @@ public class ChallengeCommand extends MinecraftCommand {
         }
 
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("challenges");
-        if (section == null) {
-            plugin.getLogger().log(Level.SEVERE, "Configuration section \"challenges\" is missing in config!");
-            sendErrorMessage(sender);
-            return true;
-        }
-
-        if (section.getKeys(false).size() == 0) {
+        if (section == null || section.getKeys(false).size() == 0) {
             sender.sendMessage(Component.text("There are no available challenges!", NamedTextColor.GOLD));
             return true;
         }
 
-        ComponentBuilder<TextComponent, TextComponent.Builder> challenges = Component.text("Available challenges:", NamedTextColor.GOLD).toBuilder();
+        ComponentBuilder<TextComponent, TextComponent.Builder> challenges = Component.text("Available challenges:",
+                NamedTextColor.GOLD).toBuilder();
 
         for (String key : section.getKeys(false)) {
             String[] keySplit = key.split("-");
